@@ -34,7 +34,7 @@ local function validate_options(opts, bg)
             end
 
             -- Check contrast floor against the background
-            if type(value) == "string" and bg then
+            if type(value) == "string" and bg and key ~= "bg" then
                 local ratio = utils.contrast(value, bg)
                 if ratio < CONTRAST_FLOOR then
                     warnings[#warnings + 1] = string.format(

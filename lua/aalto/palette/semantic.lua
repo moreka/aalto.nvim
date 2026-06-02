@@ -159,7 +159,7 @@ function M.build(c, overrides, opts)
         local floor = (variant == "light") and 4.8 or 4.2
         for key, value in pairs(overrides) do
             local current = utils.contrast(value, bg)
-            if current < floor then
+            if key ~= "bg" and current < floor then
                 vim.notify(
                     string.format("[aalto] semantic.%s has low contrast (%.2f:1 < %.1f:1) — it may be hard to read", key, current, floor),
                     vim.log.levels.WARN
