@@ -37,119 +37,119 @@
 local M = {}
 
 function M.get(S, _, _, opts)
-	opts = opts or {}
-	local styles = opts.styles or {}
+    opts = opts or {}
+    local styles = opts.styles or {}
 
-	local link = require("aalto.groups.link").create(S)
+    local link = require("aalto.groups.link").create(S)
 
-	-- Keyword italic flag, resolved once.
-	local kw_italic = styles.keywords and styles.keywords.italic or nil
+    -- Keyword italic flag, resolved once.
+    local kw_italic = styles.keywords and styles.keywords.italic or nil
 
-	local groups = {
-		-- -------------------------------------------------------------------
-		-- Semantic Token Types → four roles
-		-- -------------------------------------------------------------------
+    local groups = {
+        -- -------------------------------------------------------------------
+        -- Semantic Token Types → four roles
+        -- -------------------------------------------------------------------
 
-		-- Structural / definitional
-		["@lsp.type.namespace"] = link("definition"),
-		["@lsp.type.type"] = link("definition"),
-		["@lsp.type.class"] = link("definition"),
-		["@lsp.type.enum"] = link("definition"),
-		["@lsp.type.interface"] = link("definition"),
-		["@lsp.type.struct"] = link("definition"),
-		["@lsp.type.typeParameter"] = link("definition"),
-		["@lsp.type.function"] = link("definition"),
-		["@lsp.type.method"] = link("definition"),
-		["@lsp.type.macro"] = link("definition"),
-		["@lsp.type.decorator"] = link("definition"),
-		["@lsp.type.event"] = link("definition"), -- Event declarations (TypeScript, C#)
+        -- Structural / definitional
+        ["@lsp.type.namespace"] = link("definition"),
+        ["@lsp.type.type"] = link("definition"),
+        ["@lsp.type.class"] = link("definition"),
+        ["@lsp.type.enum"] = link("definition"),
+        ["@lsp.type.interface"] = link("definition"),
+        ["@lsp.type.struct"] = link("definition"),
+        ["@lsp.type.typeParameter"] = link("definition"),
+        ["@lsp.type.function"] = link("definition"),
+        ["@lsp.type.method"] = link("definition"),
+        ["@lsp.type.macro"] = link("definition"),
+        ["@lsp.type.decorator"] = link("definition"),
+        ["@lsp.type.event"] = link("definition"), -- Event declarations (TypeScript, C#)
 
-		-- Constant / value
-		["@lsp.type.enumMember"] = link("constant"),
-		["@lsp.type.number"] = link("constant"),
-		["@lsp.type.boolean"] = link("constant"),
+        -- Constant / value
+        ["@lsp.type.enumMember"] = link("constant"),
+        ["@lsp.type.number"] = link("constant"),
+        ["@lsp.type.boolean"] = link("constant"),
 
-		-- String / data
-		["@lsp.type.string"] = link("string"),
-		["@lsp.type.regexp"] = link("string"),
+        -- String / data
+        ["@lsp.type.string"] = link("string"),
+        ["@lsp.type.regexp"] = link("string"),
 
-		-- Comment / context
-		["@lsp.type.comment"] = link("comment", styles.comments),
+        -- Comment / context
+        ["@lsp.type.comment"] = link("comment", styles.comments),
 
-		-- Keyword — neutral foreground, same as editor keywords.
-		-- They are scaffolding, not landmarks.
-		["@lsp.type.keyword"] = { fg = S.fg, italic = kw_italic },
+        -- Keyword — neutral foreground, same as editor keywords.
+        -- They are scaffolding, not landmarks.
+        ["@lsp.type.keyword"] = { fg = S.fg, italic = kw_italic },
 
-		-- Neutral — binding and reference sites are not structural landmarks.
-		-- See EXCEPTION POLICY above.
-		["@lsp.type.parameter"] = { fg = S.fg },
-		["@lsp.type.variable"] = { fg = S.fg },
-		["@lsp.type.property"] = { fg = S.fg },
-		["@lsp.type.operator"] = { fg = S.fg },
-		["@lsp.type.modifier"] = { fg = S.fg },
+        -- Neutral — binding and reference sites are not structural landmarks.
+        -- See EXCEPTION POLICY above.
+        ["@lsp.type.parameter"] = { fg = S.fg },
+        ["@lsp.type.variable"] = { fg = S.fg },
+        ["@lsp.type.property"] = { fg = S.fg },
+        ["@lsp.type.operator"] = { fg = S.fg },
+        ["@lsp.type.modifier"] = { fg = S.fg },
 
-		-- -------------------------------------------------------------------
-		-- Semantic Token Modifiers
-		-- -------------------------------------------------------------------
+        -- -------------------------------------------------------------------
+        -- Semantic Token Modifiers
+        -- -------------------------------------------------------------------
 
-		-- Structural modifiers → definition role
-		["@lsp.mod.declaration"] = link("definition"),
-		["@lsp.mod.definition"] = link("definition"),
-		["@lsp.mod.static"] = link("definition"),
-		["@lsp.mod.async"] = link("definition"),
-		["@lsp.mod.defaultLibrary"] = link("definition"),
+        -- Structural modifiers → definition role
+        ["@lsp.mod.declaration"] = link("definition"),
+        ["@lsp.mod.definition"] = link("definition"),
+        ["@lsp.mod.static"] = link("definition"),
+        ["@lsp.mod.async"] = link("definition"),
+        ["@lsp.mod.defaultLibrary"] = link("definition"),
 
-		-- Value modifiers → constant role
-		["@lsp.mod.readonly"] = link("constant"),
+        -- Value modifiers → constant role
+        ["@lsp.mod.readonly"] = link("constant"),
 
-		-- EXCEPTION: deprecated → strikethrough
-		-- This changes reader behavior: "do not use this."
-		-- No color change needed — the strikethrough carries the message.
-		["@lsp.mod.deprecated"] = { strikethrough = true },
+        -- EXCEPTION: deprecated → strikethrough
+        -- This changes reader behavior: "do not use this."
+        -- No color change needed — the strikethrough carries the message.
+        ["@lsp.mod.deprecated"] = { strikethrough = true },
 
-		-- Documentation → comment role
-		["@lsp.mod.documentation"] = link("comment"),
+        -- Documentation → comment role
+        ["@lsp.mod.documentation"] = link("comment"),
 
-		-- Neutral modifiers — these describe implementation details that do
-		-- not change the semantic role of the identifier.
-		["@lsp.mod.modification"] = { fg = S.fg },
+        -- Neutral modifiers — these describe implementation details that do
+        -- not change the semantic role of the identifier.
+        ["@lsp.mod.modification"] = { fg = S.fg },
 
-		-- -------------------------------------------------------------------
-		-- Type+Modifier Combinations (@lsp.typemod.*)
-		-- These take precedence over @lsp.type.* when both apply
-		-- -------------------------------------------------------------------
+        -- -------------------------------------------------------------------
+        -- Type+Modifier Combinations (@lsp.typemod.*)
+        -- These take precedence over @lsp.type.* when both apply
+        -- -------------------------------------------------------------------
 
-		-- async functions remain definition
-		["@lsp.typemod.function.async"] = link("definition"),
-		["@lsp.typemod.method.async"] = link("definition"),
+        -- async functions remain definition
+        ["@lsp.typemod.function.async"] = link("definition"),
+        ["@lsp.typemod.method.async"] = link("definition"),
 
-		-- defaultLibrary items remain their base role
-		["@lsp.typemod.function.defaultLibrary"] = link("definition"),
-		["@lsp.typemod.type.defaultLibrary"] = link("definition"),
-		["@lsp.typemod.class.defaultLibrary"] = link("definition"),
+        -- defaultLibrary items remain their base role
+        ["@lsp.typemod.function.defaultLibrary"] = link("definition"),
+        ["@lsp.typemod.type.defaultLibrary"] = link("definition"),
+        ["@lsp.typemod.class.defaultLibrary"] = link("definition"),
 
-		-- readonly variables are constants
-		["@lsp.typemod.variable.readonly"] = link("constant"),
-		["@lsp.typemod.parameter.readonly"] = link("constant"),
+        -- readonly variables are constants
+        ["@lsp.typemod.variable.readonly"] = link("constant"),
+        ["@lsp.typemod.parameter.readonly"] = link("constant"),
 
-		-- static members maintain their base type
-		["@lsp.typemod.function.static"] = link("definition"),
-		["@lsp.typemod.variable.static"] = link("constant"),
+        -- static members maintain their base type
+        ["@lsp.typemod.function.static"] = link("definition"),
+        ["@lsp.typemod.variable.static"] = link("constant"),
 
-		-- -------------------------------------------------------------------
-		-- LSP UI Groups
-		-- -------------------------------------------------------------------
-		LspReferenceText = { bg = S.selection },
-		LspReferenceRead = { bg = S.selection },
-		LspReferenceWrite = { bg = S.selection },
-		LspReferenceTarget = { fg = S.definition, bg = S.selection, bold = true },
-		LspCodeLens = { fg = S.comment },
-		LspCodeLensSeparator = { fg = S.fg_dark },
-		LspInlayHint = { fg = S.comment, bg = S.bg_light },
-		LspSignatureActiveParameter = { fg = S.constant, bold = true },
-	}
+        -- -------------------------------------------------------------------
+        -- LSP UI Groups
+        -- -------------------------------------------------------------------
+        LspReferenceText = { bg = S.selection },
+        LspReferenceRead = { bg = S.selection },
+        LspReferenceWrite = { bg = S.selection },
+        LspReferenceTarget = { fg = S.definition, bg = S.selection, bold = true },
+        LspCodeLens = { fg = S.comment },
+        LspCodeLensSeparator = { fg = S.fg_dark },
+        LspInlayHint = { fg = S.comment, bg = S.bg_light },
+        LspSignatureActiveParameter = { fg = S.constant, bold = true },
+    }
 
-	return groups
+    return groups
 end
 
 return M

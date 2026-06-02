@@ -27,9 +27,7 @@
 -- been called, vim.g.aalto_config is ignored entirely.
 
 vim.cmd("hi clear")
-if vim.fn.exists("syntax_on") == 1 then
-	vim.cmd("syntax reset")
-end
+if vim.fn.exists("syntax_on") == 1 then vim.cmd("syntax reset") end
 
 vim.g.colors_name = "aalto"
 
@@ -40,8 +38,8 @@ local setup = require("aalto.setup")
 -- the colorscheme is reloaded by a plugin manager). No config is re-read,
 -- no defaults are doubled up.
 if setup.get_palette() then
-	setup.reload()
-	return
+    setup.reload()
+    return
 end
 
 -- setup() has not been called yet — fall back to vim.g.aalto_config if
@@ -50,18 +48,12 @@ local raw = vim.g.aalto_config
 local config
 
 if raw == nil then
-	config = {}
+    config = {}
 elseif type(raw) == "table" then
-	config = raw
+    config = raw
 else
-	vim.notify(
-		string.format(
-			"[aalto] vim.g.aalto_config must be a table, got %s — using defaults",
-			type(raw)
-		),
-		vim.log.levels.ERROR
-	)
-	config = {}
+    vim.notify(string.format("[aalto] vim.g.aalto_config must be a table, got %s — using defaults", type(raw)), vim.log.levels.ERROR)
+    config = {}
 end
 
 setup.setup(config)
