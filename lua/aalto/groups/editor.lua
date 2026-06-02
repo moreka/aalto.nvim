@@ -177,10 +177,10 @@ function M.get(S, bg, bg_float, opts)
     groups.DiagnosticUnderlineInfo = { undercurl = true, sp = S.info }
     groups.DiagnosticUnderlineHint = { undercurl = true, sp = S.hint }
 
-    groups.DiagnosticSignError = { fg = S.error, bg = bg }
-    groups.DiagnosticSignWarn = { fg = S.warn, bg = bg }
-    groups.DiagnosticSignInfo = { fg = S.info, bg = bg }
-    groups.DiagnosticSignHint = { fg = S.hint, bg = bg }
+    groups.DiagnosticSignError = { fg = S.error }
+    groups.DiagnosticSignWarn = { fg = S.warn }
+    groups.DiagnosticSignInfo = { fg = S.info }
+    groups.DiagnosticSignHint = { fg = S.hint }
 
     -- -------------------------------------------
     -- Miscellaneous

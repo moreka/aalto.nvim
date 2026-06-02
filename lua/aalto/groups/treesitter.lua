@@ -60,6 +60,7 @@ function M.get(S, _, _, opts)
 
     -- Keyword italic flag, resolved once.
     local kw_italic = styles.keywords and styles.keywords.italic or nil
+    local kw_bold = styles.keywords and styles.keywords.bold or nil
 
     return {
         -- -------------------------------------------------------------------
@@ -122,18 +123,18 @@ function M.get(S, _, _, opts)
         -- -------------------------------------------------------------------
         -- Keywords — scaffolding, not landmarks (neutral foreground)
         -- -------------------------------------------------------------------
-        ["@keyword"] = { fg = S.fg, italic = kw_italic },
-        ["@keyword.function"] = { fg = S.fg, italic = kw_italic },
-        ["@keyword.return"] = { fg = S.fg, italic = kw_italic },
-        ["@keyword.operator"] = { fg = S.fg, italic = kw_italic },
-        ["@keyword.import"] = { fg = S.fg, italic = kw_italic },
-        ["@keyword.type"] = { fg = S.fg, italic = kw_italic },
-        ["@keyword.modifier"] = { fg = S.fg, italic = kw_italic },
-        ["@keyword.repeat"] = { fg = S.fg, italic = kw_italic },
-        ["@keyword.conditional"] = { fg = S.fg, italic = kw_italic },
-        ["@keyword.exception"] = { fg = S.fg, italic = kw_italic },
-        ["@keyword.coroutine"] = { fg = S.fg, italic = kw_italic }, -- go, async
-        ["@keyword.debug"] = { fg = S.fg, italic = kw_italic }, -- debug keywords
+        ["@keyword"] = { fg = S.fg, italic = kw_italic, bold = kw_bold },
+        ["@keyword.function"] = { fg = S.fg, italic = kw_italic, bold = kw_bold },
+        ["@keyword.return"] = { fg = S.fg, italic = kw_italic, bold = kw_bold },
+        ["@keyword.operator"] = { fg = S.fg, italic = kw_italic, bold = kw_bold },
+        ["@keyword.import"] = { fg = S.fg, italic = kw_italic, bold = kw_bold },
+        ["@keyword.type"] = { fg = S.fg, italic = kw_italic, bold = kw_bold },
+        ["@keyword.modifier"] = { fg = S.fg, italic = kw_italic, bold = kw_bold },
+        ["@keyword.repeat"] = { fg = S.fg, italic = kw_italic, bold = kw_bold },
+        ["@keyword.conditional"] = { fg = S.fg, italic = kw_italic, bold = kw_bold },
+        ["@keyword.exception"] = { fg = S.fg, italic = kw_italic, bold = kw_bold },
+        ["@keyword.coroutine"] = { fg = S.fg, italic = kw_italic, bold = kw_bold }, -- go, async
+        ["@keyword.debug"] = { fg = S.fg, italic = kw_italic, bold = kw_bold }, -- debug keywords
         ["@keyword.conditional.ternary"] = { fg = S.fg }, -- ?:
         ["@keyword.directive"] = { fg = S.fg }, -- shebang
         ["@keyword.directive.define"] = { fg = S.fg }, -- #define
